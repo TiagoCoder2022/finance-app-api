@@ -1,4 +1,4 @@
-import { UpdateUserUsecase } from '../use-cases/update-user.js'
+import { UpdateUserUsecase } from '../use-cases/index.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import {
     invalidPasswordResponde,
