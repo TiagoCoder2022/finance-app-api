@@ -2,7 +2,7 @@ import { GetUserByIdUseCase } from '../use-cases/index.js'
 import {
     checkIfIdIsValid,
     invalidIdResponse,
-    notFound,
+    userNotFoundresponse,
     ok,
     serverError,
 } from './helpers/index.js'
@@ -23,9 +23,7 @@ export class GetUserByIdController {
             )
 
             if (!user) {
-                return notFound({
-                    message: 'User not found.',
-                })
+                return userNotFoundresponse()
             }
 
             return ok(user)
