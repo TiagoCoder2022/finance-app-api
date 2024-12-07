@@ -14,7 +14,7 @@ import {
 import {
     GetUserByIdUseCase,
     CreateUserUseCase,
-    UpdateUserUsecase,
+    UpdateUserUseCase,
     DeleteUserUseCase,
 } from '../../use-cases/index.js'
 
@@ -47,7 +47,7 @@ export const makeUpdateUserController = () => {
 
     const updateUserRepository = new PostgresUpdateUserRepository()
 
-    const updateUserUseCase = new UpdateUserUsecase(
+    const updateUserUseCase = new UpdateUserUseCase(
         getUserByEmailRepository,
         updateUserRepository,
     )
