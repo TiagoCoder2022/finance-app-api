@@ -4,7 +4,7 @@ import {
     userNotFoundresponse,
     ok,
     serverError,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 
 export class DeleteUserController {
     constructor(deleteUserUseCase) {
