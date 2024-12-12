@@ -6,6 +6,7 @@ import {
     invalidIdResponse,
     serverError,
     validateRequiredFields,
+    requiredFieldIsMissingResponse,
 } from '../helpers/index.js'
 export class CreateTransactionController {
     constructor(createTransactionUseCase) {
@@ -22,21 +23,13 @@ export class CreateTransactionController {
                 validateRequiredFields(params, requiredFields)
 
             if (!requiredFieldsWereProvided) {
-                return badRequest({
-                    message: `The field ${missingField} is required.`,
-                })
+                return requiredFieldIsMissingResponse(missingField)
             }
 
             const userIdIsValid = checkIfIdIsValid(params.user_id)
 
             if (!userIdIsValid) {
                 return invalidIdResponse()
-            }
-
-            if (params.amount <= 0) {
-                return badRequest({
-                    message: 'The amount must be greater than 0.',
-                })
             }
 
             const amountIsValid = validator.isCurrency(
