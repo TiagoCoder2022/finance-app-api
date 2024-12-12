@@ -1,4 +1,4 @@
-import { UserNotFoundError } from '../../errors/user'
+import { UserNotFoundError } from '../../errors/user.js'
 import {
     checkIfIdIsValid,
     invalidIdResponse,
@@ -6,8 +6,8 @@ import {
     requiredFieldIsMissingResponse,
     serverError,
     userNotFoundresponse,
-} from '../helpers'
-export class GetTransactionsByUserId {
+} from '../helpers/index.js'
+export class GetTransactionsByUserIdController {
     constructor(getTransactionsByUserIdUseCase) {
         this.getTransactionsByUserIdUseCase = getTransactionsByUserIdUseCase
     }
