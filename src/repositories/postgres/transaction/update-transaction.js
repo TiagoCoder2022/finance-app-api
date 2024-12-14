@@ -1,16 +1,16 @@
 import { PostgresHelper } from '../../../db/postgres/helper'
 
 export class PostgresUpdateTransactionRepository {
-    async execute(userId, updateTransactionParams) {
-        const updateFields = [] //[first_name = $1, last_name = $2]
-        const updateValues = [] //[Jane, Doe]
+    async execute(transactionId, updateTransactionParams) {
+        const updateFields = []
+        const updateValues = []
 
         Object.keys(updateTransactionParams).forEach((key) => {
             updateFields.push(`${key} = $${updateValues.length + 1}`)
             updateValues.push(updateTransactionParams[key])
         })
 
-        updateValues.push(userId)
+        updateValues.push(transactionId)
 
         const updateQuery = `
         UPDATE transactions
