@@ -1,4 +1,4 @@
-import { PostgresHelper } from '../../../db/postgres/helper'
+import { PostgresHelper } from '../../../db/postgres/helper.js'
 
 export class PostgresGetUserBalanceRepository {
     async execute(userId) {
@@ -17,6 +17,9 @@ export class PostgresGetUserBalanceRepository {
             [userId],
         )
 
-        return balance[0]
+        return {
+            userId,
+            ...balance[0],
+        }
     }
 }
