@@ -1,7 +1,12 @@
-import { serverError, userNotFoundResponse } from '../helpers.js'
+import {
+    checkIfIdIsValid,
+    invalidIdResponse,
+    userNotFoundresponse,
+    requiredFieldIsMissingResponse,
+    ok,
+    serverError,
+} from '../helpers/index.js'
 import { UserNotFoundError } from '../../errors/user.js'
-import { checkIfIdIsValid, invalidIdResponse, ok } from '../helpers'
-
 export class GetUserBalanceController {
     constructor(getUserBalanceUseCase) {
         this.getUserBalanceUseCase = getUserBalanceUseCase
@@ -11,9 +16,13 @@ export class GetUserBalanceController {
         try {
             const userId = httpRequest.params.userId
 
-            const idIsValid = checkIfIdIsValid(userId)
+            if (!userId) {
+                return requiredFieldIsMissingResponse('userId')
+            }
 
-            if (!idIsValid) {
+            const userIdIsValid = checkIfIdIsValid(userId)
+
+            if (!userIdIsValid) {
                 return invalidIdResponse()
             }
 
@@ -24,7 +33,7 @@ export class GetUserBalanceController {
             console.error(error)
 
             if (error instanceof UserNotFoundError) {
-                return userNotFoundResponse()
+                return userNotFoundresponse()
             }
 
             return serverError()
