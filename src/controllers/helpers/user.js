@@ -1,4 +1,3 @@
-import validator from 'validator'
 import { badRequest, notFound } from './http.js'
 
 export const invalidPasswordResponde = () =>
@@ -13,7 +12,3 @@ export const emailIsAlreadyInUseResponse = () =>
 
 export const userNotFoundresponse = () =>
     notFound({ message: 'User not found.' })
-
-export const checkIfPasswordIsValid = (password) => password.length >= 6
-
-export const checkIfEmailIsValid = (email) => validator.isEmail(email)
