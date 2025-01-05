@@ -29,7 +29,7 @@ export class DeleteUserController {
             return ok(deletedUser)
         } catch (error) {
             console.error(error)
-            return serverError
+            return serverError()
         }
     }
 }
