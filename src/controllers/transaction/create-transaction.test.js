@@ -179,4 +179,18 @@ describe('Create Transaction Controller', () => {
         // Assert
         expect(response.statusCode).toBe(400)
     })
+
+    it('should return 500 when CreateTransactionUseCase throws', async () => {
+        // Arrange
+        const { sut, createTransactionUseCase } = makeSut()
+        jest.spyOn(createTransactionUseCase, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        // Act
+        const response = await sut.execute(baseHttpRequest)
+
+        // Assert
+        expect(response.statusCode).toBe(500)
+    })
 })
