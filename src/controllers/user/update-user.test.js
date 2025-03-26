@@ -7,6 +7,7 @@ describe('UpdateUserController', () => {
             return user
         }
     }
+
     const makeSut = () => {
         const updateUserUseCase = new UpdateUserUseCaseStub()
         const sut = new UpdateUserController(updateUserUseCase)
@@ -35,5 +36,22 @@ describe('UpdateUserController', () => {
 
         // Assert
         expect(result.statusCode).toBe(200)
+    })
+
+    it('should return 400 if an invalid email id provided', async () => {
+        // Arrange
+        const { sut } = makeSut()
+
+        // Act
+        const result = await sut.execute({
+            params: httpRequest.params,
+            body: {
+                ...httpRequest.body,
+                email: 'invalid_email',
+            },
+        })
+
+        // Assert
+        expect(result.statusCode).toBe(400)
     })
 })
