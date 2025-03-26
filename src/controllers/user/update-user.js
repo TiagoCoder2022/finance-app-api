@@ -43,7 +43,7 @@ export class UpdateUserController {
                 return badRequest({ message: error.message })
             }
             console.error(error)
-            return serverError
+            return serverError()
         }
     }
 }
