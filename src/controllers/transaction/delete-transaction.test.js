@@ -20,6 +20,7 @@ describe('Delete Transaction Controller', () => {
 
         return { sut, deleteTransactionUseCase }
     }
+
     it('should return 200 when deleting a transaction successfully', async () => {
         // Arrange
         const { sut } = makeSut()
@@ -32,5 +33,18 @@ describe('Delete Transaction Controller', () => {
         // Assert
 
         expect(response.statusCode).toBe(200)
+    })
+
+    it('shoul return 400 when id is invalid', async () => {
+        // Arrange
+        const { sut } = makeSut()
+
+        // Act
+        const resonse = await sut.execute({
+            params: { transactionId: 'invalid_id' },
+        })
+
+        // Assert
+        expect(resonse.statusCode).toBe(400)
     })
 })
