@@ -83,4 +83,15 @@ describe('GetUserBalanceController', () => {
         // assert
         expect(response.statusCode).toBe(404)
     })
+
+    it('should return 400 when userId is missing', async () => {
+        // arrange
+        const { sut } = makeSut()
+
+        // act
+        const response = await sut.execute({ params: { userId: undefined } })
+
+        // assert
+        expect(response.statusCode).toBe(400)
+    })
 })
