@@ -30,11 +30,11 @@ export class GetUserBalanceController {
 
             return ok(balance)
         } catch (error) {
-            console.error(error)
-
             if (error instanceof UserNotFoundError) {
                 return userNotFoundresponse()
             }
+
+            console.error(error)
 
             return serverError()
         }
