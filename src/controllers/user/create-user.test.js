@@ -1,10 +1,11 @@
 import { EmailAlreadyInUseError } from '../../errors/user'
+import { user } from '../../tests'
 import { CreateUserController } from './create-user'
 import { faker } from '@faker-js/faker'
 
 describe('Create User Controller', () => {
     class CreateUserUseCaseStub {
-        async execute(user) {
+        async execute() {
             return user
         }
     }
@@ -18,10 +19,8 @@ describe('Create User Controller', () => {
 
     const httpRequest = {
         body: {
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
-            email: faker.internet.email(),
-            password: faker.internet.password({ length: 7 }),
+            ...user,
+            id: undefined,
         },
     }
 
@@ -31,7 +30,7 @@ describe('Create User Controller', () => {
         const result = await sut.execute(httpRequest)
 
         expect(result.statusCode).toBe(201)
-        expect(result.body).toEqual(httpRequest.body)
+        expect(result.body).toEqual(user)
     })
 
     it('should return 400 if first_name is not passed.', async () => {
