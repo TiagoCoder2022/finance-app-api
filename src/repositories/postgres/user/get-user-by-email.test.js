@@ -12,4 +12,18 @@ describe('GetUserByEmailRepository', () => {
 
         expect(result).toStrictEqual(user)
     })
+
+    it('should call Prisma with correct paramas', async () => {
+        const sut = new PostgreGetUserByEmailRepository()
+
+        const prismaSpy = jest.spyOn(prisma.user, 'findUnique')
+
+        await sut.execute(fakeUser.email)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                email: fakeUser.email,
+            },
+        })
+    })
 })
