@@ -7,6 +7,7 @@ import {
 } from '../../../tests'
 import { PostgresDeleteTransactionRepository } from './delete-trasaction'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+import { TransactionNotFoundError } from '../../../errors'
 
 describe('PostgresDeleteTransactionRepository', () => {
     it('should delete a transction on db', async () => {
@@ -67,6 +68,8 @@ describe('PostgresDeleteTransactionRepository', () => {
 
         const promise = sut.execute(transaction.id)
 
-        await expect(promise).rejects.toThrow()
+        await expect(promise).rejects.toThrow(
+            new TransactionNotFoundError(transaction.id),
+        )
     })
 })
