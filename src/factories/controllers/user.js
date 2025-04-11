@@ -25,7 +25,7 @@ import {
     GetUserBalanceUseCase,
 } from '../../use-cases/index.js'
 
-export const makeGetUserController = () => {
+export const makeGetUserByIdController = () => {
     const getUserByIdRepository = new PostGresGetUserByIdRepository()
 
     const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository)
