@@ -5,7 +5,7 @@ import {
     makeGetUserBalanceController,
     makeGetUserByIdController,
     makeUpdateUserController,
-} from '../factories/controllers/user'
+} from '../factories/controllers/user.js'
 
 export const usersRouter = Router()
 
