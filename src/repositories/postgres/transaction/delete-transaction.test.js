@@ -6,6 +6,7 @@ import {
     user,
 } from '../../../tests'
 import { PostgresDeleteTransactionRepository } from './delete-trasaction'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 describe('PostgresDeleteTransactionRepository', () => {
     it('should delete a transction on db', async () => {
@@ -45,10 +46,23 @@ describe('PostgresDeleteTransactionRepository', () => {
         })
     })
 
-    it('should throw generic error if prisma throws generic error', async () => {
+    it('should throw generic error if Prisma throws generic error', async () => {
         const sut = new PostgresDeleteTransactionRepository()
         jest.spyOn(prisma.transaction, 'delete').mockRejectedValueOnce(
             new Error(),
+        )
+
+        const promise = sut.execute(transaction.id)
+
+        await expect(promise).rejects.toThrow()
+    })
+
+    it('should throw TransactionNotFoundError if Prisma throws PrismaClientKnownRequestError', async () => {
+        const sut = new PostgresDeleteTransactionRepository()
+        jest.spyOn(prisma.transaction, 'delete').mockRejectedValueOnce(
+            new PrismaClientKnownRequestError('', {
+                code: 'P2025',
+            }),
         )
 
         const promise = sut.execute(transaction.id)
