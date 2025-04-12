@@ -4,7 +4,7 @@ import {
     badRequest,
     created,
     serverError,
-    userNotFoundresponse,
+    userNotFoundResponse,
 } from '../helpers/index.js'
 import { UserNotFoundError } from '../../errors/user.js'
 export class CreateTransactionController {
@@ -30,7 +30,7 @@ export class CreateTransactionController {
             }
 
             if (error instanceof UserNotFoundError) {
-                return userNotFoundresponse()
+                return userNotFoundResponse()
             }
 
             console.error(error)

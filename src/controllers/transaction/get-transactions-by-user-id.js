@@ -5,7 +5,7 @@ import {
     ok,
     requiredFieldIsMissingResponse,
     serverError,
-    userNotFoundresponse,
+    userNotFoundResponse,
 } from '../helpers/index.js'
 export class GetTransactionsByUserIdController {
     constructor(getTransactionsByUserIdUseCase) {
@@ -33,7 +33,7 @@ export class GetTransactionsByUserIdController {
             console.error(error)
 
             if (error instanceof UserNotFoundError) {
-                return userNotFoundresponse()
+                return userNotFoundResponse()
             }
 
             return serverError()

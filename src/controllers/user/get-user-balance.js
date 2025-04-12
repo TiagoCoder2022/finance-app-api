@@ -1,7 +1,7 @@
 import {
     checkIfIdIsValid,
     invalidIdResponse,
-    userNotFoundresponse,
+    userNotFoundResponse,
     requiredFieldIsMissingResponse,
     ok,
     serverError,
@@ -31,7 +31,7 @@ export class GetUserBalanceController {
             return ok(balance)
         } catch (error) {
             if (error instanceof UserNotFoundError) {
-                return userNotFoundresponse()
+                return userNotFoundResponse()
             }
 
             console.error(error)

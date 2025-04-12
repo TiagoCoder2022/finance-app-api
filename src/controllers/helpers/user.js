@@ -1,4 +1,4 @@
 import { notFound } from './http.js'
 
-export const userNotFoundresponse = () =>
+export const userNotFoundResponse = () =>
     notFound({ message: 'User not found.' })
