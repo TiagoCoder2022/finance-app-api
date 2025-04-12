@@ -4,7 +4,7 @@ import {
     makeDeleteTransactionController,
     makeGetTransactionsByUserIdController,
     makeUpdateTransactionController,
-} from '../factories/controllers/transaction'
+} from '../factories/controllers/transaction.js'
 
 export const transactionsRouter = Router()
 
