@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-      
+
       - name: Install dependencies
         run: npm install
 
@@ -26,6 +26,17 @@ jobs:
 
       - name: Prettier
         run: npm run prettier:check
+
+      # ✅ Instalação do Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
+      # ✅ Inicia o serviço Docker (se necessário)
+      - name: Start Docker service
+        run: sudo service docker start
 
       - name: Test
         run: npm run test
