@@ -46,9 +46,9 @@ describe('Delete Transaction Controller', () => {
     it('should return 404 when transaction is not found', async () => {
         // Arrange
         const { sut, deleteTransactionUseCase } = makeSut()
-        jest.spyOn(deleteTransactionUseCase, 'execute').mockRejectedValueOnce(
-            new TransactionNotFoundError(),
-        )
+        import.meta.jest
+            .spyOn(deleteTransactionUseCase, 'execute')
+            .mockRejectedValueOnce(new TransactionNotFoundError())
 
         // Act
         const response = await sut.execute({
@@ -62,9 +62,9 @@ describe('Delete Transaction Controller', () => {
     it('should retrun 500 when DeleteTransactionUseCase throws', async () => {
         // Arrange
         const { sut, deleteTransactionUseCase } = makeSut()
-        jest.spyOn(deleteTransactionUseCase, 'execute').mockRejectedValueOnce(
-            new Error(),
-        )
+        import.meta.jest
+            .spyOn(deleteTransactionUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
 
         // Act
         const response = await sut.execute({
@@ -78,7 +78,10 @@ describe('Delete Transaction Controller', () => {
     it('should call DeleteTransactionUseCase with correct params', async () => {
         // Arrange
         const { sut, deleteTransactionUseCase } = makeSut()
-        const executeSpy = jest.spyOn(deleteTransactionUseCase, 'execute')
+        const executeSpy = import.meta.jest.spyOn(
+            deleteTransactionUseCase,
+            'execute',
+        )
         const transactionId = faker.string.uuid()
 
         //Act
