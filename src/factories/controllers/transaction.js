@@ -7,7 +7,7 @@ import {
 } from '../../controllers/index.js'
 import {
     PostgresCreateTransactionRepository,
-    PostGresGetUserByIdRepository,
+    PostgresGetUserByIdRepository,
     PostgresGetTransactionsByUserIdRepository,
     PostgresUpdateTransactionRepository,
     PostgresDeleteTransactionRepository,
@@ -22,7 +22,7 @@ import {
 export const makeCreateTransacitonController = () => {
     const createTransactionRepository =
         new PostgresCreateTransactionRepository()
-    const getUserByIdRepository = new PostGresGetUserByIdRepository()
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
     const idGeneratorAdapter = new IdGeneratorAdapter()
 
     const createTransactionUseCase = new CreateTransactionUseCase(
@@ -42,7 +42,7 @@ export const makeGetTransactionsByUserIdController = () => {
     const getTransactionsByUserIdRepository =
         new PostgresGetTransactionsByUserIdRepository()
 
-    const getUserByIdRepository = new PostGresGetUserByIdRepository()
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
 
     const getTransactionsByUserIdUseCase = new GetTransactionsByUserIdUseCase(
         getTransactionsByUserIdRepository,

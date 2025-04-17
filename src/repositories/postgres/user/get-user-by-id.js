@@ -1,5 +1,5 @@
 import { prisma } from '../../../../prisma/prisma.js'
-export class PostGresGetUserByIdRepository {
+export class PostgresGetUserByIdRepository {
     async execute(userId) {
         return await prisma.user.findUnique({
             where: {
