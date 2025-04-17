@@ -43,7 +43,7 @@ jobs:
             -e POSTGRES_USER=postgres \
             -e POSTGRES_PASSWORD=password \
             -e POSTGRES_DB=finance-app \
-            -p 5433:5432 \
+            -p 55432:5432 \
             postgres:15
 
       - name: Wait for PostgreSQL to be ready
