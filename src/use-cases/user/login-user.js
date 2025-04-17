@@ -20,19 +20,23 @@ export class LoginUserUseCase {
         }
 
         // verificar se a senha recebida é válida
-        const isPasswordValid = this.passwordComparatorAdapter.execute(
+        const isPasswordValid = await this.passwordComparatorAdapter.execute(
             password,
             user.password,
         )
+
+        console.log(isPasswordValid)
 
         if (!isPasswordValid) {
             throw new InvalidPasswordError()
         }
 
         // depois, gerar os tokens de autenticacao
+        const userTokens = await this.tokenGeneratorAdapter.execute(user.id)
+
         return {
             ...user,
-            tokens: this.tokenGeneratorAdapter.execute(user.id),
+            tokens: userTokens,
         }
     }
 }
