@@ -17,6 +17,15 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Make test envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envfile: .env.test
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+
+      - name: Install dependencies
+        run: npm ci --include=dev
+
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -34,25 +43,23 @@ jobs:
             -e POSTGRES_USER=postgres \
             -e POSTGRES_PASSWORD=password \
             -e POSTGRES_DB=finance-app \
-            -p 55432:5432 \
+            -p 5433:5432 \
             postgres:15
 
-      # ✅ Cria o .env.test com a URL do banco de teste via secret
-      - name: Make test envfile
-        uses: SpicyPizza/create-envfile@v2.0
-        with:
-          envfile: .env.test
-          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
-
-      - name: Install dependencies
-        run: npm ci --include=dev
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            docker exec postgres pg_isready -U postgres && exit 0
+            sleep 2
+          done
+          exit 1
 
       - name: Generate Prisma Client
         run: npx prisma generate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
 
-      - name: Run Prisma DB Push (aplica schema no banco)
+      - name: Run Prisma DB Push
         run: npx prisma db push
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
@@ -63,10 +70,16 @@ jobs:
       - name: Prettier
         run: npm run prettier:check
 
+      # ✅ Roda os testes
       - name: Test
         run: npm run test
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+
+      # ✅ Mostra logs do Postgres se falhar
+      - name: Show Postgres logs on failure
+        if: failure()
+        run: docker logs postgres
 
 
   migrate:
