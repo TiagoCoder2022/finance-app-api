@@ -25,8 +25,6 @@ export class LoginUserUseCase {
             user.password,
         )
 
-        console.log(isPasswordValid)
-
         if (!isPasswordValid) {
             throw new InvalidPasswordError()
         }
