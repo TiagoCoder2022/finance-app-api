@@ -8,7 +8,6 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,18 +16,46 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-      
-      - name: Create .env.test file
-        run: echo "DATABASE_URL=postgresql://postgres:password@localhost:5433/finance-app" >> .env.test
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
+      - name: Start Docker service
+        run: sudo service docker start
+
+      # 🚀 Sobe o container PostgreSQL no CI
+      - name: Start PostgreSQL container
+        run: |
+          docker run -d \
+            --name postgres \
+            -e POSTGRES_USER=postgres \
+            -e POSTGRES_PASSWORD=password \
+            -e POSTGRES_DB=finance-app \
+            -p 5433:5432 \
+            postgres:15
+
+      # ✅ Cria o .env.test com a URL do banco de teste via secret
+      - name: Make test envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envfile: .env.test
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
 
       - name: Install dependencies
         run: npm ci --include=dev
 
       - name: Generate Prisma Client
         run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
 
       - name: Run Prisma DB Push (aplica schema no banco)
         run: npx prisma db push
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
 
       - name: ESLint
         run: npm run eslint:check
@@ -36,19 +63,11 @@ jobs:
       - name: Prettier
         run: npm run prettier:check
 
-      # ✅ Instalação do Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      # ✅ Inicia o serviço Docker (se necessário)
-      - name: Start Docker service
-        run: sudo service docker start
-
       - name: Test
         run: npm run test
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+
 
   migrate:
     runs-on: ubuntu-latest
