@@ -1,6 +1,8 @@
 import {
     IdGeneratorAdapter,
+    PasswordComparatorAdapter,
     PasswordHasherAdapter,
+    TokensGeneratorAdapter,
 } from '../../adapters/index.js'
 import {
     GetUserByIdController,
@@ -9,10 +11,11 @@ import {
     DeleteUserController,
     GetUserBalanceController,
 } from '../../controllers/index.js'
+import { LoginUserController } from '../../controllers/user/login-user.js'
 import {
-    PostGresGetUserByIdRepository,
+    PostgresGetUserByIdRepository,
     PostgresCreateUserRepository,
-    PostgreGetUserByEmailRepository,
+    PostgresGetUserByEmailRepository,
     PostgresUpdateUserRepository,
     PostgresDeleteUserRepository,
     PostgresGetUserBalanceRepository,
@@ -23,10 +26,11 @@ import {
     UpdateUserUseCase,
     DeleteUserUseCase,
     GetUserBalanceUseCase,
+    LoginUserUseCase,
 } from '../../use-cases/index.js'
 
 export const makeGetUserByIdController = () => {
-    const getUserByIdRepository = new PostGresGetUserByIdRepository()
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
 
     const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository)
 
@@ -36,7 +40,7 @@ export const makeGetUserByIdController = () => {
 }
 
 export const makeCreateUserController = () => {
-    const getUserByEmailRepository = new PostgreGetUserByEmailRepository()
+    const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
     const createUserRepository = new PostgresCreateUserRepository()
     const passwordHasherAdapter = new PasswordHasherAdapter()
     const idGeneratorAdapter = new IdGeneratorAdapter()
@@ -54,7 +58,7 @@ export const makeCreateUserController = () => {
 }
 
 export const makeUpdateUserController = () => {
-    const getUserByEmailRepository = new PostgreGetUserByEmailRepository()
+    const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
     const updateUserRepository = new PostgresUpdateUserRepository()
     const passwordHasherAdapter = new PasswordHasherAdapter()
 
@@ -81,7 +85,7 @@ export const makeDeleteUserController = () => {
 
 export const makeGetUserBalanceController = () => {
     const getUserBalanceRepository = new PostgresGetUserBalanceRepository()
-    const getUserByIdRepository = new PostGresGetUserByIdRepository()
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
 
     const getUserBalanceUseCase = new GetUserBalanceUseCase(
         getUserBalanceRepository,
@@ -93,4 +97,19 @@ export const makeGetUserBalanceController = () => {
     )
 
     return getUserBalanceController
+}
+
+export const makeLoginUserController = () => {
+    const tokensGeneratorAdapter = new TokensGeneratorAdapter()
+    const passwordComparatorAdapter = new PasswordComparatorAdapter()
+    const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
+
+    const loginUserUseCase = new LoginUserUseCase(
+        getUserByEmailRepository,
+        passwordComparatorAdapter,
+        tokensGeneratorAdapter,
+    )
+    const loginUserController = new LoginUserController(loginUserUseCase)
+
+    return loginUserController
 }
