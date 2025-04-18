@@ -12,9 +12,10 @@ export class RefreshTokenController {
         try {
             const params = httpRequest.body
             await refreshTokenSchema.parseAsync(params)
-            const response = this.refreshTokenUseCase.execute(
+            const response = await this.refreshTokenUseCase.execute(
                 params.refreshToken,
             )
+
             return ok(response)
         } catch (error) {
             if (error instanceof ZodError) {
