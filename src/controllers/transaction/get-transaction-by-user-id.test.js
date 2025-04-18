@@ -4,6 +4,8 @@ import { UserNotFoundError } from '../../errors/user'
 import { transaction } from '../../tests'
 
 describe('Get Transaction By Id Controller', () => {
+    const from = '2025-02-01'
+    const to = '2025-02-25'
     class GetTransactionByUserIdUseCaseStub {
         async execute() {
             return [transaction]
@@ -26,7 +28,7 @@ describe('Get Transaction By Id Controller', () => {
 
         // Act
         const response = await sut.execute({
-            query: { userId: faker.string.uuid() },
+            query: { userId: faker.string.uuid(), from, to },
         })
 
         // Assert
@@ -39,7 +41,7 @@ describe('Get Transaction By Id Controller', () => {
 
         //Act
         const response = await sut.execute({
-            query: { userId: undefined },
+            query: { userId: undefined, from, to },
         })
 
         // Assert
@@ -52,7 +54,7 @@ describe('Get Transaction By Id Controller', () => {
 
         // Act
         const response = await sut.execute({
-            query: { userId: 'invalid_id' },
+            query: { userId: 'invalid_id', from, to },
         })
 
         // Assert
@@ -68,7 +70,7 @@ describe('Get Transaction By Id Controller', () => {
 
         // Act
         const response = await sut.execute({
-            query: { userId: faker.string.uuid() },
+            query: { userId: faker.string.uuid(), from, to },
         })
 
         // Assert
@@ -84,7 +86,7 @@ describe('Get Transaction By Id Controller', () => {
 
         // Act
         const response = await sut.execute({
-            query: { userId: faker.string.uuid() },
+            query: { userId: faker.string.uuid(), from, to },
         })
 
         // Assert
@@ -102,7 +104,7 @@ describe('Get Transaction By Id Controller', () => {
 
         //Act
         await sut.execute({
-            query: { userId: userId },
+            query: { userId: userId, from, to },
         })
 
         //Assert
