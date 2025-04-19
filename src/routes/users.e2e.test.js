@@ -119,7 +119,7 @@ describe('User Routes E2E Tests', () => {
             })
 
         const response = await request(app)
-            .get(`/api/users/balance`)
+            .get(`/api/users/balance?from=${from}&to=${to}`)
             .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
 
         expect(response.status).toBe(200)
