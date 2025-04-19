@@ -31,12 +31,15 @@ describe('GetUserBalanceUseCase', () => {
         }
     }
 
+    const from = '2025-02-02'
+    const to = '2025-02-20'
+
     it('should get balance successfully', async () => {
         // arrange
         const { sut } = makeSut()
 
         // act
-        const result = await sut.execute(faker.string.uuid())
+        const result = await sut.execute(faker.string.uuid(), from, to)
 
         // assert
         expect(result).toEqual(userBalance)
@@ -51,7 +54,7 @@ describe('GetUserBalanceUseCase', () => {
         const userId = faker.string.uuid()
 
         // act
-        const promise = sut.execute(userId)
+        const promise = sut.execute(userId, from, to)
 
         // assert
         expect(promise).rejects.toThrow(new UserNotFoundError(userId))
@@ -65,7 +68,7 @@ describe('GetUserBalanceUseCase', () => {
             'execute',
         )
 
-        await sut.execute(userId)
+        await sut.execute(userId, from, to)
 
         expect(executeSpy).toHaveBeenCalledWith(userId)
     })
@@ -78,9 +81,9 @@ describe('GetUserBalanceUseCase', () => {
             'execute',
         )
 
-        await sut.execute(userId)
+        await sut.execute(userId, from, to)
 
-        expect(executeSpy).toHaveBeenCalledWith(userId)
+        expect(executeSpy).toHaveBeenCalledWith(userId, from, to)
     })
 
     it('should throw if GetUserByIdRepository throws', async () => {
@@ -91,7 +94,7 @@ describe('GetUserBalanceUseCase', () => {
             .mockRejectedValue(new Error())
 
         // act
-        const promise = sut.execute(faker.string.uuid())
+        const promise = sut.execute(faker.string.uuid(), from, to)
 
         // assert
         await expect(promise).rejects.toThrow()
@@ -105,7 +108,7 @@ describe('GetUserBalanceUseCase', () => {
             .mockRejectedValue(new Error())
 
         // act
-        const promise = sut.execute(faker.string.uuid())
+        const promise = sut.execute(faker.string.uuid(), from, to)
 
         // assert
         await expect(promise).rejects.toThrow()
