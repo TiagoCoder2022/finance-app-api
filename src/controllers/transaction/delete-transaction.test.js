@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker'
-import { DeleteTransactionController } from './delete-transaction'
+import { TransactionNotFoundError } from '../../errors'
 import { transaction } from '../../tests'
-import { TransactionNotFoundError } from '../../errors/transaction'
+import { DeleteTransactionController } from './delete-transaction'
+import { faker } from '@faker-js/faker'
 
 describe('Delete Transaction Controller', () => {
     class DeleteTransactionUseCaseStub {
@@ -9,87 +9,102 @@ describe('Delete Transaction Controller', () => {
             return transaction
         }
     }
+
     const makeSut = () => {
         const deleteTransactionUseCase = new DeleteTransactionUseCaseStub()
         const sut = new DeleteTransactionController(deleteTransactionUseCase)
 
         return { sut, deleteTransactionUseCase }
     }
-
     it('should return 200 when deleting a transaction successfully', async () => {
-        // Arrange
+        // arrange
         const { sut } = makeSut()
 
-        // Act
+        // act
         const response = await sut.execute({
-            params: { transactionId: faker.string.uuid() },
+            params: {
+                transactionId: faker.string.uuid(),
+                user_id: faker.string.uuid(),
+            },
         })
 
-        // Assert
-
+        // assert
         expect(response.statusCode).toBe(200)
     })
 
-    it('shoul return 400 when id is invalid', async () => {
-        // Arrange
+    it('should return 400 when id is invalid', async () => {
+        // arrange
         const { sut } = makeSut()
 
-        // Act
-        const resonse = await sut.execute({
-            params: { transactionId: 'invalid_id' },
+        // act
+        const response = await sut.execute({
+            params: {
+                transactionId: 'invalid_id',
+                user_id: faker.string.uuid(),
+            },
         })
 
-        // Assert
-        expect(resonse.statusCode).toBe(400)
+        // assert
+        expect(response.statusCode).toBe(400)
     })
 
     it('should return 404 when transaction is not found', async () => {
-        // Arrange
+        // arrange
         const { sut, deleteTransactionUseCase } = makeSut()
         import.meta.jest
             .spyOn(deleteTransactionUseCase, 'execute')
             .mockRejectedValueOnce(new TransactionNotFoundError())
 
-        // Act
+        // act
         const response = await sut.execute({
-            params: { transactionId: faker.string.uuid() },
+            params: {
+                transactionId: faker.string.uuid(),
+                user_id: faker.string.uuid(),
+            },
         })
 
-        // Assert
+        // assert
         expect(response.statusCode).toBe(404)
     })
 
-    it('should retrun 500 when DeleteTransactionUseCase throws', async () => {
-        // Arrange
+    it('should return 500 when DeleteTransactionUseCase throws', async () => {
+        // arrange
         const { sut, deleteTransactionUseCase } = makeSut()
         import.meta.jest
             .spyOn(deleteTransactionUseCase, 'execute')
             .mockRejectedValueOnce(new Error())
 
-        // Act
+        // act
         const response = await sut.execute({
-            params: { transactionId: faker.string.uuid() },
+            params: {
+                transactionId: faker.string.uuid(),
+                user_id: faker.string.uuid(),
+            },
         })
 
-        // Assert
+        // assert
         expect(response.statusCode).toBe(500)
     })
-
     it('should call DeleteTransactionUseCase with correct params', async () => {
-        // Arrange
+        // arrange
         const { sut, deleteTransactionUseCase } = makeSut()
         const executeSpy = import.meta.jest.spyOn(
             deleteTransactionUseCase,
             'execute',
         )
-        const transactionId = faker.string.uuid()
 
-        //Act
+        const transactionId = faker.string.uuid()
+        const userId = faker.string.uuid()
+
+        // act
         await sut.execute({
-            params: { transactionId },
+            params: {
+                transactionId,
+                user_id: userId,
+            },
         })
 
-        //Assert
-        expect(executeSpy).toHaveBeenCalledWith(transactionId)
+        // assert
+        expect(executeSpy).toHaveBeenCalledWith(transactionId, userId)
     })
 })
