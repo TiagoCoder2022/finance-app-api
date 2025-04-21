@@ -4,8 +4,9 @@ import { transaction, user } from '../../../tests'
 import { PostgresUpdateTransactionRepository } from './update-transaction'
 import { TransactionType } from '@prisma/client'
 import dayjs from 'dayjs'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+
 import { TransactionNotFoundError } from '../../../errors'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library.js'
 
 describe('PostgresUpdateTransactionRepository', () => {
     it('should update a transaction on db', async () => {
@@ -65,7 +66,7 @@ describe('PostgresUpdateTransactionRepository', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    it('should throw TransactionNotFoundError if Prisma throws PrismaClientKnownRequestError', async () => {
+    it('should throw TransactionNotFoundError if Prisma does not find record to update', async () => {
         const sut = new PostgresUpdateTransactionRepository()
         import.meta.jest
             .spyOn(prisma.transaction, 'update')
@@ -75,7 +76,7 @@ describe('PostgresUpdateTransactionRepository', () => {
                 }),
             )
 
-        const promise = sut.execute(transaction.id)
+        const promise = sut.execute(transaction.id, transaction)
 
         await expect(promise).rejects.toThrow(
             new TransactionNotFoundError(transaction.id),
