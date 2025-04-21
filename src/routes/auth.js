@@ -2,7 +2,7 @@ import { Router } from 'express'
 import {
     makeLoginUserController,
     makeRefreshTokenController,
-} from '../factories/controllers/auth'
+} from '../factories/controllers/auth.js'
 
 export const authRouter = Router()
 

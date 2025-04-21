@@ -2,12 +2,12 @@ import {
     PasswordComparatorAdapter,
     TokensGeneratorAdapter,
     TokenVerifierAdapter,
-} from '../../adapters'
+} from '../../adapters/index.js'
 import {
     LoginUserController,
     RefreshTokenController,
 } from '../../controllers/index.js'
-import { PostgresGetUserByEmailRepository } from '../../repositories/postgres'
+import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/index.js'
 import { LoginUserUseCase, RefreshTokenUseCase } from '../../use-cases/index.js'
 
 export const makeLoginUserController = () => {

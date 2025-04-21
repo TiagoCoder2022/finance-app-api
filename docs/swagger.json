@@ -160,17 +160,17 @@
                 ]
             }
         },
-        "/api/users/login": {
+        "/api/auth/login": {
             "post": {
                 "summary": "Login User",
-                "tags": ["User"],
+                "tags": ["Auth"],
                 "parameters": [
                     {
                         "name": "body",
                         "required": true,
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/LoginUserParams"
+                            "$ref": "#/definitions/LoginAuthParams"
                         }
                     }
                 ],
@@ -196,10 +196,10 @@
                 }
             }
         },
-        "/api/users/refresh-token": {
+        "/api/auth/refresh-token": {
             "post": {
                 "summary": "Refresh User Token",
-                "tags": ["User"],
+                "tags": ["Auth"],
                 "parameters": [
                     {
                         "name": "body",
@@ -390,7 +390,7 @@
         },
         "/api/transactions/me/{transactionId}": {
             "patch": {
-                "summary": "Update transaction by ID",
+                "summary": "Update transaction by ID for the authenticated user",
                 "tags": ["Transaction"],
                 "parameters": [
                     {
@@ -442,7 +442,7 @@
                 ]
             },
             "delete": {
-                "summary": "Delete transaction by ID",
+                "summary": "Delete transaction by ID for the authenticated user",
                 "tags": ["Transaction"],
                 "parameters": [
                     {
@@ -603,7 +603,7 @@
                 }
             }
         },
-        "LoginUserParams": {
+        "LoginAuthParams": {
             "type": "object",
             "properties": {
                 "email": {
