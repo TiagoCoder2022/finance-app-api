@@ -1,4 +1,4 @@
-# 💰 Financial API
+# 💰 Finance App API
 
 API REST para controle financeiro pessoal, com autenticação de usuários, gerenciamento de transações e cálculo de saldo. Desenvolvido com foco em boas práticas, validações robustas e testes automatizados.
 
@@ -23,8 +23,8 @@ API REST para controle financeiro pessoal, com autenticação de usuários, gere
 ### 1. Clone o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/financial-api.git
-cd financial-api
+git clone https://github.com/TiagoCoder2022/finance-app-api.git
+cd finance-app-api
 ````
 
 ### 2. Instale as dependências:
@@ -47,7 +47,7 @@ POSTGRES_USER=your_user
 POSTGRES_PORT=5432
 POSTGRES_HOST=localhost
 POSTGRES_DB=financial_db
-PORT=3000
+PORT=8080
 
 DATABASE_URL=postgresql://your_user:your_password@localhost:5432/financial_db
 JWT_ACCESS_TOKEN_SECRET=your_access_token_secret
