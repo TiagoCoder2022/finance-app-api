@@ -73,20 +73,20 @@ npx prisma migrate dev
 ## 1. Inicie o servidor:
 
 ```bash
-npm run dev
+npm run start:dev
 ````
 
 ## 2. A API estará disponível em:
 
 ```bash
-http://localhost:3000
+http://localhost:8080
 ````
 
 ## 📚 Documentação da API
 
 A documentação completa da API está disponível via Swagger UI após iniciar o servidor:
 
-- Acesse: http://localhost:3000/docs
+- Acesse: http://localhost:8080/docs
 
 A documentação inclui:
 
